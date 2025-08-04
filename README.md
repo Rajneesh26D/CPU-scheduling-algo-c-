@@ -1,121 +1,97 @@
-CPU-Scheduling-Simulator
-A C++ implementation of various CPU scheduling algorithms, including First Come First Serve (FCFS), Round Robin (RR), Shortest Process Next (SPN), Shortest Remaining Time (SRT), Highest Response Ratio Next (HRRN), Feedback (FB), Feedback with Varying Quantum (FBV), and Aging.
-Table of Contents
+# CPU-Scheduling-Algorithms
+A C++ implementation of multiple CPU scheduling algorithms, including First Come First Serve (FCFS), Round Robin (RR), Shortest Job First (SJF), Shortest Remaining Time First (SRTF), Highest Response Ratio First (HRRF), Multi-Level Feedback (MLF), Multi-Level Feedback with Variable Quantum (MLFV), and Priority Aging
 
-CPU-Scheduling-Simulator
-Algorithms
-First Come First Serve (FCFS)
-Round Robin with Dynamic Quantum (RR)
-Shortest Process Next (SPN)
-Shortest Remaining Time (SRT)
-Highest Response Ratio Next (HRRN)
-Feedback (FB)
-Feedback with Dynamic Quantum (FBV)
-Aging
+## Table of Contents
+- [CPU-Scheduling-Algorithms](#cpu-scheduling-algorithms)
+  - [Algorithms](#algorithms)
+    - [First Come First Serve (FCFS)](#first-come-first-serve-fcfs)
+    - [Round Robin with varying time quantum (RR)](#round-robin-with-varying-time-quantum-rr)
+    - [Shortest Process Next (SPN)](#shortest-process-next-spn)
+    - [Shortest Remaining Time (SRT)](#shortest-remaining-time-srt)
+    - [Highest Response Ratio Next (HRRN)](#highest-response-ratio-next-hrrn)
+    - [Feedback (FB)](#feedback-fb)
+    - [Feedback with varying time quantum (FBV)](#feedback-with-varying-time-quantum-fbv)
+    - [Aging](#aging)
+  - [Installation](#installation)
+  - [Input Format](#input-format)
+  - [Contributors](#contributors)
 
+## Scheduling Algorithms
 
-Setup Instructions
-Input Specifications
-Contributors
+### First Come First Serve (FCFS)
+- FCFS schedules processes based on their arrival order. It’s a non-preemptive algorithm, meaning a process runs until it completes. While simple, it may lead to inefficiencies if early-arriving processes have long execution times, delaying others. It’s best suited for systems prioritizing sequential processing.
 
+### Round Robin with varying time quantum (RR)
+- Round Robin (RR) with adjustable quantum uses time-sharing to allocate CPU time. The quantum (time slice) varies based on process needs, allowing shorter processes to use smaller slices and longer ones larger slices.
+- Processes are queued, and each executes for its assigned quantum. If the quantum expires, the process moves to the queue’s end, and the next process runs. Adjustable quanta enhance efficiency by reducing wait times and preventing process starvation
 
+### Shortest Job First (SJF)
+- Shortest Job First (SJF) is a non-preemptive algorithm that selects the process with the shortest total execution time (burst time). Processes are queued and sorted by burst time, with the shortest at the front.
+- SJF minimizes average waiting time by prioritizing quick tasks but may delay longer processes if short ones arrive frequently. It’s effective when minimizing wait times is critical.
 
-Algorithms
-First Come First Serve (FCFS)
+### Shortest Remaining Time First (SRTF)
+- Shortest Remaining Time First (SRTF) is a preemptive version of SJF, prioritizing the process with the least remaining execution time. New processes with shorter remaining times can interrupt the current process
+- The queue dynamically sorts by remaining time, adapting to new arrivals or execution progress. SRTF optimizes wait times and is suitable for systems with unpredictable process durations
 
-First Come First Serve (FCFS) schedules processes in the order they arrive. It’s straightforward but may cause delays if long processes arrive early, as it’s non-preemptive. Processes execute fully once started, making it suitable for batch systems where order matters but less ideal for systems with varied process lengths.
+### Highest Response Ratio First (HRRF)
+- Highest Response Ratio First (HRRF) is a non-preemptive algorithm that prioritizes processes based on their response ratio, calculated as (waiting time + burst time) / burst time. The highest ratio determines the next process to run.
+- HRRF balances fairness by favoring processes that have waited longer relative to their burst time. It’s effective for reducing wait times in systems with variable or unknown process durations.
 
-Round Robin with Dynamic Quantum (RR)
+### Multi-Level Feedback (MLF)
+- Multi-Level Feedback (MLF) uses multiple priority queues to manage processes. Higher-priority processes execute first, and upon completion, they move to a lower-priority queue.
+- MLF efficiently handles diverse workloads, ensuring critical tasks run promptly while allowing less urgent processes eventual CPU access. It’s ideal for systems with mixed process types.
 
-Round Robin (RR) with dynamic quantum allocates CPU time to processes in a time-sharing manner, with adjustable time slices (quantum). Shorter processes can receive smaller quanta, while longer ones get larger quanta, improving efficiency.
+### Multi-Level Feedback with Variable Quantum (MLFV)
+- MLFV extends MLF by assigning different time quanta to each priority queue. Higher-priority queues receive larger quanta, optimizing CPU time for critical tasks while still serving lower-priority ones.
 
-Processes are queued, and each gets a time slice to run. If the quantum expires, the process moves to the queue’s end, and the next process runs. Dynamic quanta reduce waiting times and prevent starvation by balancing CPU allocation across processes.
+### Priority Aging
+- Priority Aging addresses starvation in systems where high-priority processes monopolize CPU time, leaving lower-priority ones unserved. In systems like Xinu, where the highest-priority process always runs (with round-robin for equal priorities), lower-priority processes can starve
 
+- Aging increments the priority of all ready processes by a fixed value during each scheduling cycle, ensuring every process eventually gains top priority. The scheduler:
+    - Resets the current process’s priority to its initial value.
+    - Increases the priority of all ready processes by 1.
+    - Selects the highest-priority process from the ready list and current process.
 
-Shortest Process Next (SPN)
+- The scheduler scans the entire ready list each cycle to update priorities.
 
-Shortest Process Next (SPN) prioritizes processes with the shortest burst time (total execution time). It’s non-preemptive, meaning a process runs to completion once started.
+## Setup Guide
+1- Clone the repository
 
-A queue holds processes sorted by burst time, with the shortest at the front. New arrivals are inserted based on their burst time. SPN minimizes average waiting time but may delay longer processes if short ones keep arriving.
-
-
-Shortest Remaining Time (SRT)
-
-Shortest Remaining Time (SRT) is a preemptive version of SPN, prioritizing processes with the least remaining execution time. If a new process with a shorter remaining time arrives, it can interrupt the current process.
-
-The queue sorts processes by remaining time, updating as processes execute or new ones arrive. SRT reduces waiting times and adapts to dynamic burst times, making it effective when process durations are unpredictable.
-
-
-Highest Response Ratio Next (HRRN)
-
-Highest Response Ratio Next (HRRN) selects processes based on their response ratio, calculated as (waiting time + burst time) / burst time. It’s non-preemptive, so processes run to completion.
-
-The queue sorts processes by response ratio, prioritizing those with longer waits relative to their burst time. HRRN balances fairness and efficiency, reducing waiting times when burst times vary or are unknown.
-
-
-Feedback (FB)
-
-Feedback (FB) assigns CPU time based on process priority, using multiple priority queues. Higher-priority processes run first, and completed processes move to a lower-priority queue.
-
-This approach handles diverse workloads, ensuring high-priority tasks execute promptly while allowing lower-priority ones eventual access. It’s ideal for systems with mixed short and long processes.
-
-
-Feedback with Dynamic Quantum (FBV)
-
-Feedback with Dynamic Quantum (FBV) extends FB by assigning different time quanta to each priority queue. Higher-priority queues get larger quanta, optimizing CPU allocation for critical tasks while still serving lower-priority ones.
-
-Aging
-
-Aging prevents starvation in systems like Xinu, where the highest-priority process always runs, potentially blocking lower-priority ones. Xinu uses round-robin for equal-priority processes, but differing priorities can cause starvation.
-
-Aging increments the priority of all ready processes by a fixed amount during each scheduling cycle, ensuring every process eventually becomes the highest priority. The scheduler:
-
-Resets the current process’s priority to its initial value.
-Increments priorities of all ready processes by 1.
-Selects the highest-priority process from all eligible processes (ready list + current process).
-
-
-The entire ready list is traversed each cycle to update priorities.
-
-
-Setup Instructions
-
-Clone the repository.
-Install the g++ compiler and make:
-
+2- Install g++ compiler and make
+```bash
 sudo apt-get install g++ make
+```
+3- Compile the code using `make` command
 
+4- Run the executable file
 
-Compile the code using the make command.
-Run the generated executable.
+## Input Format
+- Line 1: "trace" or "stats"
+- Line 2: a comma-separated list telling which CPU scheduling policies to be analyzed/visualized along with
+their parameters, if applicable. Each algorithm is represented by a number as listed in the
+introduction section and as shown in the attached testcases.
+Round Robin and Aging have a parameter specifying the quantum q to be used. Therefore, a policy
+entered as 2-4 means Round Robin with q=4. Also, policy 8-1 means Aging with q=1.
+ 1. FCFS (First Come First Serve)
+ 2. RR (Round Robin)
+ 3. SPN (Shortest Process Next)
+ 4. SRT (Shortest Remaining Time)
+ 5. HRRN (Highest Response Ratio Next)
+ 6. FB-1, (Feedback where all queues have q=1)
+ 7. FB-2i, (Feedback where q= 2i)
+ 8. Aging
+- Line 3: An integer specifying the last instant to be used in your simulation and to be shown on the timeline.
+- Line 4: An integer specifying the number of processes to be simulated.
+- Line 5: Start of description of processes. Each process is to be described on a separate line. For algorithms 1 through 7, each process is described using a comma-separated list specifying:
 
-Input Specifications
+    1- String specifying a process name\
+    2- Arrival Time\
+    3- Service Time
 
-Line 1: "trace" or "stats" to specify output mode.
-Line 2: Comma-separated list of algorithms to analyze/visualize, with parameters if needed. Algorithms are numbered:
-FCFS
-RR (Round Robin, specify quantum, e.g., 2-4 for RR with quantum=4)
-SPN
-SRT
-HRRN
-FB-1 (Feedback, all queues with quantum=1)
-FB-2i (Feedback, quantum=2^i)
-Aging (specify quantum, e.g., 8-1 for Aging with quantum=1)
+- **Note:** For Aging algorithm (algorithm 8), each process is described using a comma-separated list specifying:
 
-
-Line 3: Integer for the last simulation instant to display on the timeline.
-Line 4: Integer for the number of processes to simulate.
-Line 5 onward: Process descriptions, one per line. For algorithms 1–7, each line includes:
-Process name (string)
-Arrival time
-Service time (burst time)
-
-
-For Aging (algorithm 8), each line includes:
-Process name (string)
-Arrival time
-Priority
-
-
-Processes are sorted by arrival time. If arrival times are equal, lower-priority processes are assumed to arrive first.
-Refer to the testcases for examples.
+    1- String specifying a process name\
+    2- Arrival Time\
+    3- Priority
+- Processes are assumed to be sorted based on the arrival time. If two processes have the same arrival time, then the one with the lower priority is assumed to arrive first.
+> Check the attached [testcases](https://github.com/yousefkotp/CPU-Scheduling-Algorithms/tree/main/testcases) for more details.

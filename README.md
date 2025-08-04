@@ -2,19 +2,17 @@
 A C++ implementation of multiple CPU scheduling algorithms, including First Come First Serve (FCFS), Round Robin (RR), Shortest Job First (SJF), Shortest Remaining Time First (SRTF), Highest Response Ratio First (HRRF), Multi-Level Feedback (MLF), Multi-Level Feedback with Variable Quantum (MLFV), and Priority Aging
 
 ## Table of Contents
-- [CPU-Scheduling-Algorithms](#cpu-scheduling-algorithms)
-  - [Algorithms](#algorithms)
+  - [Scheduling Algorithms](#scheduling-algorithms)
     - [First Come First Serve (FCFS)](#first-come-first-serve-fcfs)
-    - [Round Robin with varying time quantum (RR)](#round-robin-with-varying-time-quantum-rr)
-    - [Shortest Process Next (SPN)](#shortest-process-next-spn)
-    - [Shortest Remaining Time (SRT)](#shortest-remaining-time-srt)
-    - [Highest Response Ratio Next (HRRN)](#highest-response-ratio-next-hrrn)
-    - [Feedback (FB)](#feedback-fb)
-    - [Feedback with varying time quantum (FBV)](#feedback-with-varying-time-quantum-fbv)
-    - [Aging](#aging)
-  - [Installation](#installation)
-  - [Input Format](#input-format)
-  - [Contributors](#contributors)
+    - [Round Robin with Adjustable Quantum (RR)](#round-robin-with-adjustable-quantum-rr)
+    - [Shortest Job First (SJF)](#shortest-job-first-sjf)
+    - [Shortest Remaining Time First (SRTF)](#shortest-remaining-time-first-srtf)
+    - [Highest Response Ratio First (HRRF)](#highest-response-ratio-first-hrrf)
+    - [Multi-Level Feedback (MLF)](#multi-level-feedback-mlf)
+    - [Multi-Level Feedback with Variable Quantum (MLFV)](#multi-level-feedback-with-variable-quantum-mlfv)
+    - [Priority Aging](#priority-aging)
+  - [Setup Guide](#setup-guide)
+  - [Input Structure](#input-structure)
 
 ## Scheduling Algorithms
 
